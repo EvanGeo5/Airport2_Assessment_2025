@@ -3,49 +3,52 @@
 
 import random
 
-# This function will add the planes inside the take off que and landing que depending on the input given
+# This function will add the planes inside the take off que and landing que depending on the input given and later will put
+# the planes that have a malfunction inside the emergency landing list
 def airlines_on():
-    #plane_dict = {1: "plane011",2: "plane012", 3:"plane013",4:"plane014",5:"plane015"}
-    plane_log = ["plane011", "plane012", "plane013", "plane014", "plane015"]
-    takeoff_que = []#plane_dict[1], plane_dict[2]]#,plane_dict[3]] 
+    #plane_dict = {1: "plane011",2: "plane012", 3:"plane013",4:"plane014",5:"plane015"} was my idea of using a dictionary for this task
+    plane_log = ["plane011", "plane012", "plane013", "plane014", "plane015", "plane016", "plane017", "plane018"]
+    takeoff_que = []#plane_dict[1], plane_dict[2]]#,plane_dict[3]] if i used a dictionary 
     landing_que = []
-    plane = 0
-    for plane in plane_log: #range(len(plane_dict)):
-        if plane not in takeoff_que or landing_que == None:
-            air_control = input(random.choice(plane_log) + " requesting take off: ")
-            if air_control == "take off":
-                takeoff_que.append(plane)
-                print(plane, " added to take off list")
-                print(takeoff_que)
-            else:
-                print("Wrong command was given")
-                takeoff_que.remove(plane)
-        elif plane in takeoff_que or landing_que == None:
-            air_control2 = input(random.choice(plane_log) + " requesting to land")
-            if air_control2 == "land":
-                landing_que.append(plane)
-                print(plane, " added to landing list")
-                print(landing_que)
-            else:
-                return "Request rejected"
-        else:
-            emergencyLandings()
-    print("No plane registered")
-
-# This function will add the planes from the take off que to the emergency landing que depending on the input
-def emergencyLandings():
     emergency_land = []
-    takeoff_que = []
-
-    for plane in range(len(takeoff_que)):
-        emergency_landing = input(random.choice(takeoff_que) + " requesting emergency landing: ")
-        if emergency_landing == "land":
-            emergency_land.append(plane)
-            print(plane, " has started an emergency landing")
-            print(emergency_land)
-        return "Denied"
-    print("No emergency identified")
+    plane = random.choices(plane_log)
+    if landing_que == []:
+        for plane in plane_log:
+            if plane not in takeoff_que:
+                air_control = input(random.choice(plane_log) + " requesting take off: ") # input the plane's name
+                takeoff_que.append(air_control)
+                print(air_control, " added to take off list")
+                print(takeoff_que)
+                if air_control == False:
+                    takeoff_que.remove(plane)
+                    print("Wrong command was given")
+            elif plane in takeoff_que:
+                air_control2 = input(random.choice(plane_log) + " requesting to land: ") # input the plane's name
+                landing_que.append(air_control2) 
+                print(air_control2, " added to landing list")
+                print(landing_que)
+                if air_control2 == False:
+                    print("No plane registered")
+                    return "Request rejected"
+                elif plane in landing_que:
+                    for plane in landing_que:
+                        malfunction = random.randint(1,10) #if the malfunction's scale is 8 and above then the following loop will be executed
+                        if plane not in takeoff_que and malfunction >= 8:
+                            emergency_landing = input(random.choice(landing_que) + " requesting emergency landing: ") # input the plane's name
+                            emergency_land.append(emergency_landing)
+                            landing_que.append(emergency_landing)
+                            print(emergency_landing, " has started an emergency landing")
+                            print(emergency_land,'\n',landing_que)
+                        else:    
+                            print("No emergency identified")
+    else: 
+        print("Landing que is full")
 airlines_on()
+
+
+
+
+
     
     
 
